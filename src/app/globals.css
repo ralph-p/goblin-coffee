@@ -1,26 +1,156 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-inter);
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+  --font-heading: var(--font-fraunces);
+  /* Goblin Coffee brand palette (raw tokens, usable as bg-moss, text-clay, etc.) */
+  --color-moss: var(--moss);
+  --color-bark: var(--bark);
+  --color-clay: var(--clay);
+  --color-oat: var(--oat);
+  --color-lichen: var(--lichen);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/*
+ * Goblin Coffee — earth-tone theme.
+ * moss (primary), bark (text), clay (accent), oat/parchment (surfaces), lichen (soft accent).
+ * Text/background pairs are chosen to meet WCAG AA (>= 4.5:1).
+ */
+:root {
+  --moss: #4a5d3a;
+  --bark: #2b2118;
+  --clay: #a8572f;
+  --oat: #e8dfcf;
+  --lichen: #8a9a7b;
+
+  --background: #f4efe6;
+  --foreground: var(--bark);
+  --card: #fbf8f2;
+  --card-foreground: var(--bark);
+  --popover: #fbf8f2;
+  --popover-foreground: var(--bark);
+  --primary: var(--moss);
+  --primary-foreground: #f7f3ea;
+  --secondary: var(--oat);
+  --secondary-foreground: var(--bark);
+  --muted: #ebe4d7;
+  --muted-foreground: #66594b;
+  --accent: #dfe5d6;
+  --accent-foreground: #2f3c25;
+  --destructive: #a63d2a;
+  --border: #d9cfbd;
+  --input: #d9cfbd;
+  --ring: var(--lichen);
+  --chart-1: #4a5d3a;
+  --chart-2: #a8572f;
+  --chart-3: #8a9a7b;
+  --chart-4: #7a5c3e;
+  --chart-5: #c9a46a;
+  --radius: 0.75rem;
+  --sidebar: #ece5d8;
+  --sidebar-foreground: var(--bark);
+  --sidebar-primary: var(--moss);
+  --sidebar-primary-foreground: #f7f3ea;
+  --sidebar-accent: #dfe5d6;
+  --sidebar-accent-foreground: #2f3c25;
+  --sidebar-border: #d9cfbd;
+  --sidebar-ring: var(--lichen);
+}
+
+.dark {
+  --moss: #8fa77a;
+  --bark: #ede6d8;
+  --clay: #d4875e;
+  --oat: #3a3027;
+  --lichen: #6f7f62;
+
+  --background: #1c1712;
+  --foreground: var(--bark);
+  --card: #251f19;
+  --card-foreground: var(--bark);
+  --popover: #251f19;
+  --popover-foreground: var(--bark);
+  --primary: var(--moss);
+  --primary-foreground: #1c1712;
+  --secondary: var(--oat);
+  --secondary-foreground: var(--bark);
+  --muted: #2e2720;
+  --muted-foreground: #b8ab98;
+  --accent: #2f3a27;
+  --accent-foreground: #dfe8d3;
+  --destructive: #e07a63;
+  --border: #3d342b;
+  --input: #463c32;
+  --ring: var(--lichen);
+  --chart-1: #8fa77a;
+  --chart-2: #d4875e;
+  --chart-3: #b6c4a6;
+  --chart-4: #c49a6c;
+  --chart-5: #e2c58f;
+  --sidebar: #221c16;
+  --sidebar-foreground: var(--bark);
+  --sidebar-primary: var(--moss);
+  --sidebar-primary-foreground: #1c1712;
+  --sidebar-accent: #2f3a27;
+  --sidebar-accent-foreground: #dfe8d3;
+  --sidebar-border: #3d342b;
+  --sidebar-ring: var(--lichen);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
+  html {
+    @apply font-sans;
+  }
+  h1, h2, h3, h4 {
+    @apply font-heading tracking-tight;
+  }
 }

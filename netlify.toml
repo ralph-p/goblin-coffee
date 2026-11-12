@@ -1,0 +1,10 @@
+[build]
+  command = "pnpm build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "24"
+
+# Netlify's Next.js runtime is detected automatically.
+# Scheduled jobs (Phase 2+) go in netlify/functions/*.mts with
+# `export const config = { schedule: "..." }` and simply POST to /api/cron/<job>.

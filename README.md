@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Goblin Coffee
 
-## Getting Started
+Storefront and roastery admin for Goblin Coffee, a small-batch roaster built around sustainability and a connection with nature.
 
-First, run the development server:
+- **Store:** catalog, cart, checkout paid by Interac e-Transfer (confirmed manually), shipping or local pickup/delivery, optional customer accounts.
+- **Admin:** orders, green bean lots, roast logs, packaging stock, reporting.
+
+See **[docs/ROADMAP.md](docs/ROADMAP.md)** for the full phased plan.
+
+## Stack
+
+Next.js 16 (App Router, Cache Components) · TypeScript · Tailwind v4 + shadcn/ui · Drizzle ORM + Neon Postgres · Better Auth · AWS S3 · Resend + React Email · Netlify (self-hosting planned).
+
+## Getting started
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+cp .env.example .env.local   # fill in values
+pnpm dev                     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script | Purpose |
+|---|---|
+| `pnpm dev` / `build` / `start` | Next.js |
+| `pnpm lint` / `typecheck` | Checks (also run in CI) |
+| `pnpm db:generate` | Generate SQL migrations from `src/db/schema` |
+| `pnpm db:migrate` | Apply migrations to `DATABASE_URL` |
+| `pnpm db:studio` | Browse the database |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Layout
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+src/app/(store)/       storefront
+src/app/(account)/     customer account
+src/app/admin/         roastery dashboard
+src/app/api/cron/      scheduled jobs (POST with Bearer CRON_SECRET)
+src/db/                Drizzle client + schema (one file per domain)
+src/lib/               env, storage (S3), email, money helpers
+```
 
-## Learn More
+## Portability
 
-To learn more about Next.js, take a look at the following resources:
+The app is kept host-agnostic so it can move off Netlify later:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- DB access goes only through `src/db/index.ts`.
+- Storage goes through `src/lib/storage.ts` (set `S3_ENDPOINT` to use MinIO/R2).
+- Email goes through `src/lib/email/send.ts`.
+- Cron jobs are plain HTTP routes.
+- `NEXT_OUTPUT=standalone pnpm build` produces a Docker-ready server.
