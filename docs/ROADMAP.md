@@ -55,6 +55,11 @@ Stack: Next.js (full stack, App Router), Netlify, Neon Postgres and AWS S3, with
 6. Add Goblin Coffee theme tokens (earth-tone palette, fonts) in `globals.css` and a placeholder branded landing page.
 7. `git init`, first commit, `git remote add origin https://github.com/ralph-p/goblin-coffee.git`, push `main`. If the push needs auth, Ralph runs it via `! git push -u origin main`.
 
+## Status (mocked backends)
+Phases 1, 2, 3 and 5 are built against **mocked** services (in-memory repo, local file storage, dev mailbox).
+Still to do for those phases: the Drizzle/Neon `Repo`, real S3 and Resend wiring, Better Auth for the admin,
+and `"use cache"` + `cacheTag` for catalog reads once data lives in a real DB.
+
 ## Phase 1 — Catalog & storefront
 - Schema: `products` (origin, process, roast level, tasting notes, slug, status), `variants` (size_g, grind options, price_cents, weight_g for shipping, SKU), `product_images` (S3 key, sort order).
 - Admin product CRUD with S3 presigned uploads (port `asset-image-upload` and `product-image-gallery-admin`).

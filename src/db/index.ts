@@ -5,12 +5,15 @@ import { env } from "@/lib/env";
 import * as schema from "./schema";
 
 /**
- * The single DB entry point. When self-hosting, swap the Neon HTTP driver for
- * `drizzle-orm/node-postgres` here. Nothing else in the app needs to change.
+ * Drizzle client for the future Neon-backed Repo (DATA_DRIVER=neon).
+ * Not used while the app runs on the in-memory repo.
+ * When self-hosting, swap the Neon HTTP driver for `drizzle-orm/node-postgres`.
  */
 let instance: NeonHttpDatabase<typeof schema> | undefined;
 
 export function db() {
-  instance ??= drizzle(neon(env().DATABASE_URL), { schema, casing: "snake_case" });
+  const url = env().DATABASE_URL;
+  if (!url) throw new Error("DATABASE_URL is not set");
+  instance ??= drizzle(neon(url), { schema, casing: "snake_case" });
   return instance;
 }
